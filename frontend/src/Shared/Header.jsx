@@ -1,7 +1,5 @@
-// src/components/Header.js
-import React from 'react';
-import './Header.css';
-import logo from '../image/logo.png';
+import React, {useState, useRef, useEffect} from 'react';
+import { FaSearch, FaBell } from "react-icons/fa";
 
 
 const Header = () => {

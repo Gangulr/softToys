@@ -8,18 +8,19 @@ import SalaryRet from './SalaryDetailsRet/SalaryRet';
 import HRManagementReport from './HRreport/HRreport';
 import ARet from './ATrackingRet/ARet';
 import LeaveRet from './LeaveRetrive/LeaveRet';
-import Addemp from './AddEmp/Addemp';
-import EmpRet from './AddEmpRet/empRet';
- // Added import for EmpRet
+// import Addemp from './AddEmp/Addemp';
+// import EmpRet from './AddEmpRet/empRet';
 
 const App = () => {
   return (
     <Router>
       <div>
+        {/* Render standalone components here if needed */}
         <SalaryRet />
         <ARet />
         <LeaveRet />
-        <EmpRet /> {/* Added EmpRet component */}
+        {/* <Addemp /> */}
+        {/* <EmpRet /> */}
 
         <Routes>
           <Route path="/" element={<HRManagementInterface />} />
@@ -27,7 +28,6 @@ const App = () => {
           <Route path="/salarymang" element={<SalaryMang />} />
           <Route path="/attendancetrack" element={<AttendanceTrackingForm />} />
           <Route path="/hr-report" element={<HRManagementReport />} />
-          <Route path="/addemp" element={<Addemp />} />
         </Routes>
       </div>
     </Router>

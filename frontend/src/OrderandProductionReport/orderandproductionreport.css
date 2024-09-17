@@ -1,0 +1,90 @@
+/* src/OrderAndProductionReport/OrderAndProductionReport.css */
+
+.report-container {
+    margin: auto;
+    padding: 2rem;
+    max-width: 1200px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.report-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #ff6f61;
+    text-align: center;
+    border-bottom: 2px solid #e6ae5f;
+    padding-bottom: 0.5rem;
+}
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
+.chart-wrapper {
+    width: 100%;
+    max-width: 540px;
+    padding: 1.5rem;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.chart-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.chart-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    color: #ff6f61;
+    text-align: center;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+}
+
+.report-table th {
+    background-color: #ee8d4c;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.report-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.report-table td:first-child {
+    font-weight: 600;
+    color: #1a202c;
+}
