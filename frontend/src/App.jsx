@@ -20,8 +20,23 @@ const App = () => {
   </div>
     
 
+<<<<<<< HEAD
   );
 };
+=======
+        <Routes>
+          <Route path="/" element={<HRManagementInterface />} />
+          <Route path="/leaveform" element={<LeaveRequestForm />} />
+          <Route path="/salarymang" element={<SalaryMang />} />
+          <Route path="/attendancetrack" element={<AttendanceTrackingForm />} />
+          <Route path="/hr-report" element={<HRManagementReport />} />
+          <Route path="/addemp" element={<Addemp />} />
+        </Routes>
+      </div>
+    </Router>
+
+)};
+>>>>>>> 20cfdcc728f0996c8b7e7e2970a12e146c86d822
 
 export default App;
 

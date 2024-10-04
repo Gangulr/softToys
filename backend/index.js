@@ -10,8 +10,8 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/ProductRoutes.js";
 import categoryRoutes from "./routes/CategoryRoutes.js";
 import uploadRoutes from './routes/UploadRoutes.js';
-import LeaveReqRoutes from './routes/LeaveReqRoutes.js';
-import AddEmployeeRoutes from './routes/AddEmployeeRoutes.js'
+import leaveReqRoutes from './routes/LeaveReqRoutes.js';  // Consistent naming
+import AddEmployeeRoutes from './routes/AddEmployeeRoutes.js'; 
 
 // Load the .env file
 dotenv.config();
