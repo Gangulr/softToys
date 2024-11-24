@@ -1,0 +1,86 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fef6f3; /* Light peach background */
+  }
+  
+  .header {
+    background-color: #ffebf0;
+    padding: 10px 20px; /* Reduced padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #f47e5f;
+    border-radius: 15px;
+    
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick to the top of the viewport */
+    z-index: 1000; /* Ensure it stays above other content */
+  }
+  
+  /* Header Container */
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Logo */
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 50px;  /* Reduced logo size */
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .logo h1 {
+    font-size: 24px;  /* Reduced font size */
+    color: #ff6f61; /* Softer, vibrant color */
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Navigation */
+  .navigation ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navigation li {
+    margin: 0 15px; /* Adjusted spacing */
+  }
+  
+  .navigation a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px; /* Reduced font size */
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .navigation a:hover {
+    color: #ff6f61; /* Matching hover color */
+  }
+  
+  /* Login Button */
+  .login .login-button {
+    padding: 8px 20px; /* Reduced button padding */
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 15px; /* Soft rounded corners */
+    cursor: pointer;
+    font-size: 16px; /* Reduced font size */
+    transition: background-color 0.3s ease;
+  }
+  
+  .login .login-button:hover {
+    background-color: #f47e5f; /* Slightly darker shade on hover */
+  }
+  

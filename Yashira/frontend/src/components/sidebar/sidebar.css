@@ -1,0 +1,63 @@
+/* Sidebar Styles */
+.sidebar {
+    width: 16rem;
+    height: 100vh;
+    background: linear-gradient(to bottom, #FEF6F3, #F9F6F4, #F5F1EE); /* Soft peachy tones */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 15px;
+    position: fixed; /* Fixed position for smooth scrolling */
+  }
+  
+  /* Navigation Link Styles */
+  .nav-links {
+    flex-grow: 1;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center; /* Align icon with text */
+    padding: 1rem 1.5rem; /* Spacious touch targets */
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    color: #333333; /* Dark neutral for navigation links */
+    background-color: #F5F1EE; /* Light background for nav items */
+    font-size: 1.2rem; /* Slightly larger for readability */
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Added smooth hover transition */
+    text-decoration: none; /* Remove underline */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Subtle shadow to lift links */
+    cursor: pointer; /* Pointer cursor for interactivity */
+  }
+  
+  .nav-link:hover {
+    background-color: #FF6F61; /* Peachy red for hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow for hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+  }
+  
+  .active {
+    background-color: #FF6F61; /* Active state with vibrant peachy-red */
+    color: #FEF6F3; /* Light text on active link */
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Larger shadow for active state */
+    transform: translateY(-2px); /* Slight lift on active state */
+    text-decoration: none; /* Remove underline for active links */
+  }
+  
+  /* Icon Styles */
+  .nav-icon {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: #61A0FF; /* Contrasting blue for icons */
+  }
+  
+  /* Subtle hover animations and interactivity */
+  .nav-link:hover .nav-icon,
+  .active .nav-icon {
+    color: #F5F1EE; /* Light icon color on hover/active */
+  }
+  

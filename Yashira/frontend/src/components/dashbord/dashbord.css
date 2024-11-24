@@ -1,0 +1,97 @@
+/* General Container Styles */
+.dashboard-container {
+    min-height: 100vh;
+    background-color: #FEF6F3; /* Soft peach background */
+    padding: 40px 16px;
+    margin-left: 17rem; /* Adjust for sidebar width */
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  /* Title Styles */
+  .dashboard-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FF6F61; /* Vibrant peachy-red */
+    margin-bottom: 24px;
+  }
+  
+  /* Grid Layout */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  @media (min-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  
+  /* Card Styles */
+  .dashboard-card {
+    background-color: #FFFFFF;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .dashboard-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Card Titles */
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #333333; /* Dark neutral color */
+    margin-bottom: 12px;
+  }
+  
+  /* Card Numbers */
+  .card-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FF6F61; /* Vibrant peachy-red for the numbers */
+  }
+  
+  /* Analytics Section */
+  .dashboard-analytics {
+    margin-top: 32px;
+    background-color: #FFFFFF;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .dashboard-analytics:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .analytics-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333333; /* Dark neutral color */
+    margin-bottom: 16px;
+  }
+  
+  .analytics-text {
+    font-size: 0.95rem;
+    color: #718096; /* Muted gray for text */
+    line-height: 1.75;
+  }
+  

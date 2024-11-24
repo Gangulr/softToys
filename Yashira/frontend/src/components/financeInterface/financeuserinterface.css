@@ -1,0 +1,98 @@
+.financeInterfacePage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a8b, #fecfef); /* Gradient background */
+  padding: 20px;
+}
+
+.financeInterfacePage .scrollableBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for depth */
+  margin: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.financeInterfacePage .scrollableBody:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Enhanced hover shadow */
+}
+
+.financeInterfacePage .content {
+  max-width: 50%;
+  text-align: left;
+}
+
+.financeInterfacePage .title {
+  font-size: 48px; /* Larger for emphasis */
+  font-weight: 800;
+  color: #ff6f61;
+  margin-bottom: 20px;
+  letter-spacing: 1px; /* Slight letter spacing */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Text shadow for pop */
+}
+
+.financeInterfacePage .description {
+  font-size: 18px;
+  color: #555; /* Darker text for better contrast */
+  line-height: 1.6; /* Increase line spacing for better readability */
+  margin-bottom: 30px;
+}
+
+.financeInterfacePage .ctaButton {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: 600; /* Bolder buttons */
+  color: #ffffff;
+  background-color: #ff6f61;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.financeInterfacePage .ctaButton:hover {
+  background-color: #e45b4c;
+  transform: translateY(-3px); /* Slight lift on hover */
+}
+
+.financeInterfacePage .illustration {
+  max-width: 45%;
+  text-align: center; /* Center the image */
+}
+
+.financeInterfacePage .illustrationImage {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Image shadow */
+  transition: transform 0.3s ease;
+}
+
+.financeInterfacePage .illustrationImage:hover {
+  transform: scale(1.05); /* Subtle zoom effect */
+}
+
+@media (max-width: 768px) {
+  .financeInterfacePage .scrollableBody {
+      flex-direction: column; /* Stack on smaller screens */
+      text-align: center;
+  }
+  
+  .financeInterfacePage .content {
+      max-width: 100%;
+      margin-bottom: 20px;
+  }
+
+  .financeInterfacePage .illustration {
+      max-width: 100%;
+  }
+}

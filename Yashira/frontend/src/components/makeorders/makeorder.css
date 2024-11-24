@@ -1,0 +1,150 @@
+/* Container */
+.make-order-container {
+    max-width: 800px;
+    padding: 2rem;
+    background-color: #FEF6F3; /* Soft peach background */
+    border-radius: 12px; /* Softer edges for a modern look */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Elevation */
+    margin: 0rem 20rem; /* Center the form horizontally with auto margins */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  /* Form Title */
+  .form-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #FF6F61; /* Vibrant peachy-red for the title */
+    text-align: center; /* Center the title */
+  }
+  
+  /* Form Group */
+  .form-group {
+    margin-bottom: 1.5rem;
+    width: 100%; /* Ensure form group takes full width */
+  }
+  
+  /* Form Label */
+  .form-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #333333; /* Neutral dark for readability */
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  /* Form Input */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background-color: #FFFFFF;
+  }
+  
+  .form-input:focus {
+    border-color: #FF6F61; /* Primary color on focus */
+    box-shadow: 0 0 8px rgba(255, 111, 97, 0.3); /* Soft shadow on focus */
+    outline: none;
+  }
+  
+  /* Items Title */
+  .items-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #FF6F61; /* Match with the form title */
+    text-align: center; /* Center the title */
+  }
+  
+  /* Item Group */
+  .item-group {
+    margin-bottom: 1.5rem; /* Space between each item group */
+    width: 100%; /* Ensure full width for item group */
+  }
+  
+  /* Item Row - First row for Item Name and Quantity */
+  .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Two columns: Item Name (wider) and Quantity (narrower) */
+    gap: 1rem;
+    align-items: center; /* Align input fields vertically in the center */
+  }
+  
+  /* Description Row - Second row for Description */
+  .description-row {
+    margin-top: 1rem; /* Spacing between rows */
+  }
+  
+  /* Form Input Adjustments */
+  .form-input.item-name {
+    width: 100%;
+  }
+  
+  .form-input.item-quantity {
+    width: 100%; /* Take the full space of the grid column */
+  }
+  
+  .form-input.item-description {
+    width: 100%; /* Full width for description input */
+  }
+  
+  /* Add Item Button */
+  .add-item-button {
+    background-color: #61A0FF; /* Complementary blue for Add Another Item */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: block; /* Make it full-width on mobile */
+    width: 100%; /* Full-width button for a clean design */
+    margin-bottom: 1.5rem; /* Spacing below the button */
+  }
+  
+  .add-item-button:hover {
+    background-color: #1E6DB8; /* Darker blue on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Submit Button */
+  .submit-button {
+    background-color: #27ae60; /* Green for submit */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: block; /* Make it full-width on mobile */
+    width: 100%; /* Full-width button for a clean design */
+    margin-top: 1rem; /* Space between the add item and submit buttons */
+  }
+  
+  .submit-button:hover {
+    background-color: #1E8C48; /* Darker green on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hover effect */
+  }
+  
+  /* Status Message */
+  .status-message {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    color: #61A0FF; /* Blue for status message */
+    font-weight: 600;
+    text-align: center; /* Center the status message */
+  }
+  

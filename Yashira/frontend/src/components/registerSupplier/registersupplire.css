@@ -1,0 +1,104 @@
+/* Container for the Register Supplier form */
+.register-supplier-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #FEF6F3; /* Updated background color */
+    border-radius: 12px; /* Softer rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow for depth */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effects */
+  }
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  
+  .register-supplier-container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Elevate the form on hover */
+  }
+  
+  .form-title {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 2rem; /* Increased spacing */
+    color: #333;
+    font-weight: bold;
+    letter-spacing: 1px; /* Slight letter spacing for modern touch */
+  }
+  
+  .supplier-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem; /* Increased spacing for more modern layout */
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    color: #444; /* Darker color for better contrast */
+    margin-bottom: 0.75rem; /* Increased spacing between label and input */
+    display: block;
+    font-size: 1rem; /* Consistent label size */
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.85rem;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Softer rounded corners for input fields */
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .form-input:focus {
+    border-color: #4caf50; /* Match input border color to button color */
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3); /* Light green focus shadow */
+    outline: none;
+  }
+  
+  .submit-button {
+    padding: 0.85rem;
+    background-color: #4caf50; /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Softer button corners */
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2); /* Subtle button shadow */
+  }
+  
+  .submit-button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    box-shadow: 0 6px 18px rgba(76, 175, 80, 0.3); /* Deeper shadow on hover */
+  }
+  
+  .form-message {
+    margin-top: 2rem; /* More space above the message */
+    text-align: center;
+    font-weight: 600;
+    color: #4caf50; /* Color matches the success message */
+    font-size: 1.1rem;
+  }
+  
+  /* Optional: Adding media queries for responsiveness */
+  @media (max-width: 768px) {
+    .register-supplier-container {
+      padding: 1.5rem;
+    }
+  
+    .form-title {
+      font-size: 1.8rem;
+    }
+  
+    .submit-button {
+      font-size: 1.1rem;
+    }
+  }
+  
