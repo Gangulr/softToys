@@ -1,77 +1,115 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #fef6f3; /* Light peach background to match the theme */
-  }
-  
-  .header {
-    background-color: #ffebf0;
-    padding: 20px 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #f47e5f;
-    border-radius: 15px; /* Rounded corners for a softer look */
-  }
-  
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo img {
-    width: 70px;
-    height: 70px;
-    margin-right: 15px;
-  }
-  
-  .logo h1 {
-    font-size: 30px;
-    color: #ff6f61; /* Softer, vibrant color */
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .navigation ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .navigation li {
-    margin: 0 20px;
-  }
-  
-  .navigation a {
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  .navigation a:hover {
-    color: #ff6f61; /* Matching hover color */
-  }
-  
-  .login .login-button {
-    padding: 12px 25px;
-    background-color: #ff6f61;
-    color: white;
-    border: none;
-    border-radius: 15px; /* Soft rounded corners */
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login .login-button:hover {
-    background-color: #e45b4c; /* Slightly darker on hover */
-  }
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #fef6f3; /* Light peach background to match the theme */
+}
+
+.header {
+  background-color: #ffebf0;
+  padding: 20px 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #f47e5f;
+  border-radius: 15px; /* Rounded corners for a softer look */
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
+
+.logo h1 {
+  font-size: 30px;
+  color: #ff6f61; /* Softer, vibrant color */
+  font-weight: bold;
+  margin: 0;
+}
+
+.navigation ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation li {
+  margin: 0 20px;
+  position: relative; /* Needed for dropdown positioning */
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: #ff6f61; /* Matching hover color */
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position below the Users link */
+  left: 0;
+  background-color: #ffebf0;
+  border: 2px solid #f47e5f;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  display: none; /* Initially hidden */
+  z-index: 1000; /* Ensure dropdown appears above other elements */
+  width: 200px; /* Set width to make the dropdown uniform */
+}
+
+.navigation li:hover .dropdown-menu {
+  display: block; /* Show dropdown on hover */
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu li:hover {
+  background-color: #ff6f61;
+  color: #fff;
+}
+
+.logout-container .logout-button {
+  padding: 12px 25px;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 15px; /* Soft rounded corners */
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-container .logout-button:hover {
+  background-color: #e45b4c; /* Slightly darker on hover */
+}

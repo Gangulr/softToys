@@ -1,27 +1,21 @@
 import express from 'express';
-import {
-    createEmployee,
-    getEmployees,
-    getEmployeeById,
-    updateEmployee,
-    deleteEmployee
-} from '../controllers/addEmployeeController.js';  // Ensure the correct path and case
+import EmployeeController from '../controllers/addEmployeeController.js';
 
 const EmployeeRoutes = express.Router();
 
 // Route to create a new employee
-EmployeeRoutes.post("/", express.json(), createEmployee);
+EmployeeRoutes.post("/", express.json(), EmployeeController.createEmployee);
 
 // Route to get all employees
-EmployeeRoutes.get("/", getEmployees);
+EmployeeRoutes.get("/", EmployeeController.getAllEmployees);
 
 // Route to get an employee by ID
-EmployeeRoutes.get("/:id", getEmployeeById);
+EmployeeRoutes.get("/:id", EmployeeController.getEmployeeById);
 
 // Route to update an employee by ID
-EmployeeRoutes.put("/:id", express.json(), updateEmployee);
+EmployeeRoutes.put("/:id", express.json(), EmployeeController.updateEmployee);
 
 // Route to delete an employee by ID
-EmployeeRoutes.delete("/:id", deleteEmployee);
+EmployeeRoutes.delete("/:id", EmployeeController.deleteEmployee);
 
 export default EmployeeRoutes;

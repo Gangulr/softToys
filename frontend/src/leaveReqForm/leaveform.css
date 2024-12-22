@@ -5,6 +5,12 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .error {
+    color: red;
+    font-size: 0.875rem; /* Optional: Adjust to match your design */
+    margin-top: 0.25rem;
+  }
+  
 }
 
 .form-title {

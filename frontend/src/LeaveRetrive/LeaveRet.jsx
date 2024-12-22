@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Shared/Header';
 import Footer from '../Shared/Footer';
 import axios from 'axios';
+import jsPDF from 'jspdf'; // Import jsPDF for PDF generation
+import 'jspdf-autotable'; // Import the autoTable plugin for jsPDF
+import './leaveret.css';
 
 const LeaveRetrieve = () => {
   const [leaves, setLeaves] = useState([]);
@@ -55,9 +58,10 @@ const LeaveRetrieve = () => {
     setFilteredLeaves(leaves);
   };
 
-  const filterLeaves = (name, type) => {
+  const filterLeaves = (searchTerm, type) => {
     const filtered = leaves.filter((leave) =>
-      leave.name.toLowerCase().includes(name.toLowerCase()) &&
+      (leave.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        leave.empId.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (type ? leave.type === type : true)
     );
     setFilteredLeaves(filtered);
@@ -114,6 +118,36 @@ const LeaveRetrieve = () => {
     }
   };
 
+  // PDF generation function
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text('Leave Requests List', 20, 10);
+    
+    // Add table headers
+    const headers = [['ID', 'Employee ID', 'Name', 'Start Date', 'End Date', 'Reason', 'Type']];
+    
+    // Map filtered leaves to table data
+    const data = filteredLeaves.map(leave => [
+      leave._id,
+      leave.empId,
+      leave.name,
+      new Date(leave.startDate).toLocaleDateString(),
+      new Date(leave.endDate).toLocaleDateString(),
+      leave.reason,
+      leave.type
+    ]);
+
+    // Generate table in PDF
+    doc.autoTable({
+      head: headers,
+      body: data,
+      startY: 20
+    });
+    
+    // Save the PDF and download
+    doc.save('Leave_Requests_List.pdf');
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -127,7 +161,7 @@ const LeaveRetrieve = () => {
             type="search"
             value={searchTerm}
             onChange={handleSearch}
-            placeholder="Search by name"
+            placeholder="Search by name or employee ID"
             className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 pl-10 text-sm text-gray-700 border rounded"
           />
           <select
@@ -146,70 +180,102 @@ const LeaveRetrieve = () => {
           >
             Reset
           </button>
+          {/* Button to generate and download PDF */}
+          <button
+            onClick={generatePDF}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+          >
+            Download PDF
+          </button>
         </div>
 
         {/* Editing Form */}
-        {editingLeave && (
-          <form onSubmit={handleFormSubmit} className="mb-4">
-            <h2 className="text-2xl font-bold mb-2">Edit Leave Request</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input
-                type="text"
-                name="empId"
-                value={formData.empId}
-                onChange={handleFormChange}
-                placeholder="Employee ID"
-                className="p-2 border rounded"
-              />
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleFormChange}
-                placeholder="Name"
-                className="p-2 border rounded"
-              />
-              <input
-                type="date"
-                name="startDate"
-                value={formData.startDate}
-                onChange={handleFormChange}
-                className="p-2 border rounded"
-              />
-              <input
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleFormChange}
-                className="p-2 border rounded"
-              />
-              <input
-                type="text"
-                name="reason"
-                value={formData.reason}
-                onChange={handleFormChange}
-                placeholder="Reason"
-                className="p-2 border rounded"
-              />
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleFormChange}
-                className="p-2 border rounded"
-              >
-                <option value="Annual Leave">Annual Leave</option>
-                <option value="Sick Leave">Sick Leave</option>
-                <option value="Maternity Leave">Maternity Leave</option>
-              </select>
-            </div>
-            <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              Save Changes
-            </button>
-            <button onClick={() => setEditingLeave(null)} className="ml-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-              Cancel
-            </button>
-          </form>
-        )}
+{editingLeave && (
+  <form onSubmit={handleFormSubmit} className="mb-4">
+    <h2 className="text-2xl font-bold mb-2">Edit Leave Request</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label htmlFor="empId" className="block mb-1">Employee ID</label>
+        <input
+          type="text"
+          id="empId"
+          name="empId"
+          value={formData.empId}
+          onChange={handleFormChange}
+          placeholder="Employee ID"
+          className="p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="name" className="block mb-1">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleFormChange}
+          placeholder="Name"
+          className="p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="startDate" className="block mb-1">Start Date</label>
+        <input
+          type="date"
+          id="startDate"
+          name="startDate"
+          value={formData.startDate}
+          onChange={handleFormChange}
+          className="p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="endDate" className="block mb-1">End Date</label>
+        <input
+          type="date"
+          id="endDate"
+          name="endDate"
+          value={formData.endDate}
+          onChange={handleFormChange}
+          className="p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="reason" className="block mb-1">Reason</label>
+        <input
+          type="text"
+          id="reason"
+          name="reason"
+          value={formData.reason}
+          onChange={handleFormChange}
+          placeholder="Reason"
+          className="p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="type" className="block mb-1">Type</label>
+        <select
+          id="type"
+          name="type"
+          value={formData.type}
+          onChange={handleFormChange}
+          className="p-2 border rounded"
+        >
+          <option value="Annual Leave">Annual Leave</option>
+          <option value="Sick Leave">Sick Leave</option>
+          <option value="Maternity Leave">Maternity Leave</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+      Save Changes
+    </button>
+    <button onClick={() => setEditingLeave(null)} className="ml-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+      Cancel
+    </button>
+  </form>
+)}
+
 
         {/* Leave Requests Table */}
         <table className="w-full table-auto">

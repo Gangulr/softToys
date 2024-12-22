@@ -1,84 +1,61 @@
-.form-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 16px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  .form-group {
-    margin-bottom: 16px;
-  }
-  
-  .form-group label {
-    display: block;
-    color: #4A5568;
-    font-size: 0.875rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .form-group input[type="text"],
-  .form-group input[type="email"],
-  .form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #CBD5E0;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    color: #4A5568;
-  }
-  
-  .submit-button {
-    background-color: #4299E1;
-    color: white;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #2B6CB0;
-  }
-  
-  .table-container {
-    margin-top: 24px;
-  }
-  
-  .attendance-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-  }
-  
-  .attendance-table th,
-  .attendance-table td {
-    border: 1px solid #CBD5E0;
-    padding: 8px;
-    text-align: left;
-    color: #4A5568;
-  }
-  
-  .attendance-table th {
-    background-color: #E2E8F0;
-    font-weight: bold;
-  }
-  
-  .attendance-table tr:nth-child(even) {
-    background-color: #F7FAFC;
-  }
-  
-  .attendance-table tr:hover {
-    background-color: #EDF2F7;
-  }
-  
+/* Update Form Styles */
+.update-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.update-form h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.update-form input, .update-form select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-form input:focus, .update-form select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+.update-form button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-form button:hover {
+  background-color: #0056b3;
+}
+
+.update-form button:disabled {
+  background-color: #d3d3d3;
+}
+
+.update-form .form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.update-form .form-row > div {
+  flex: 1;
+}

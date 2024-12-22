@@ -1,0 +1,39 @@
+.dashboard-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333; /* Darker color for better readability */
+}
+
+.dashboard-stats {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column; /* Stack the stats vertically */
+  align-items: center;
+}
+
+.stat {
+  width: 100%; /* Full width */
+  margin: 10px 0; /* Spacing between stats */
+}
+
+.stat-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #555; /* Slightly lighter color for titles */
+}
+
+.stat-value {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #007bff; /* Blue color for emphasis */
+  text-align: center; /* Center text */
+  border-bottom: 2px solid #007bff; /* Underline the value */
+  padding-bottom: 10px; /* Space between value and underline */
+}

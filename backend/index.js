@@ -10,8 +10,11 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/ProductRoutes.js";
 import categoryRoutes from "./routes/CategoryRoutes.js";
 import uploadRoutes from './routes/UploadRoutes.js';
-import leaveReqRoutes from './routes/LeaveReqRoutes.js';  // Consistent naming
+import LeaveReqRoutes from './routes/LeaveReqRoutes.js';  // Consistent naming
 import AddEmployeeRoutes from './routes/AddEmployeeRoutes.js'; 
+import SalaryDetailsRoutes from './routes/SalaryDetailsRoutes.js';
+import AttendenceRoutes from './routes/AttendenceRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 // Load the .env file
 dotenv.config();
@@ -32,8 +35,14 @@ app.use(cookieParser());
 app.use("/api/category", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
-app.use("/api/leave", LeaveReqRoutes);  // Ensure route path matches case sensitivity
+app.use("/api/Leave", LeaveReqRoutes);  // Ensure route path matches case sensitivity
 app.use("/api/employee", AddEmployeeRoutes)
+app.use("/api/salary", SalaryDetailsRoutes);
+app.use('/api/attendence', AttendenceRoutes); // Ensure the path matches
+app.use('api/dashboard', dashboardRoutes);
+
+
+
 
 const __dirname = path.resolve();
 app.use('/uploads/products', express.static(path.join(__dirname, '/uploads/products')));

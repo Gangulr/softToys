@@ -1,0 +1,136 @@
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group label {
+    display: block;
+    color: #4A5568;
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="date"],
+  .form-group input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #CBD5E0;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #4A5568;
+  }
+  
+  .form-group input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  
+  .submit-button {
+    background-color: #4299E1;
+    color: white;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #2B6CB0;
+  }
+  
+  .table-container {
+    margin-top: 24px;
+  }
+  
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    border: 1px solid #CBD5E0;
+    padding: 8px;
+    text-align: left;
+    color: #4A5568;
+  }
+  
+  .attendance-table th {
+    background-color: #E2E8F0;
+    font-weight: bold;
+  }
+  
+  .attendance-table tr:nth-child(even) {
+    background-color: #F7FAFC;
+  }
+  
+  .attendance-table tr:hover {
+    background-color: #EDF2F7;
+  }
+  
+  .search-input,
+  .select-filter {
+    padding: 8px;
+    border: 1px solid #CBD5E0;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #4A5568;
+  }
+  
+  .reset-button {
+    background-color: #3182CE;
+    color: white;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .reset-button:hover {
+    background-color: #2B6CB0;
+  }
+  
+  .edit-button {
+    background-color: #ECC94B;
+    color: white;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-button:hover {
+    background-color: #D69E2E;
+  }
+  
+  .delete-button {
+    background-color: #F56565;
+    color: white;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    background-color: #E53E3E;
+  }
+  

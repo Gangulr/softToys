@@ -1,145 +1,181 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import './HRreport.css';
+import axios from 'axios';
+
 import Header from '../Shared/Header';
 import Footer from '../Shared/Footer';
 
-const HRManagementReport = () => {
-  const [salaryData, setSalaryData] = useState([]);
-  const [leaveData, setLeaveData] = useState([]);
-  const [attendanceData, setAttendanceData] = useState([]);
+const EmployeeList = () => {
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    department: '',
+    employeeId: '',
+    employeeType: '',
+    baseSalary: '',
+    dateOfBirth: ''
+  });
+  const [searchQuery, setSearchQuery] = useState('');
 
+  // States for reports
+  const [dailyReport, setDailyReport] = useState([]);
+  const [monthlyReport, setMonthlyReport] = useState([]);
+  const [yearlyReport, setYearlyReport] = useState([]);
+
+  // Fetch employees from backend
   useEffect(() => {
-    // Fetch or simulate data fetching for salary, leave, and attendance
-    setSalaryData([
-      { employeeId: 'E001', name: 'John Doe', salary: 5000, allowances: 500, otHours: 10 },
-      { employeeId: 'E002', name: 'Jane Smith', salary: 4500, allowances: 400, otHours: 5 },
-    ]);
-
-    setLeaveData([
-      { employeeId: 'E001', name: 'John Doe', leaveType: 'Sick Leave', daysTaken: 3 },
-      { employeeId: 'E002', name: 'Jane Smith', leaveType: 'Vacation', daysTaken: 5 },
-    ]);
-
-    setAttendanceData([
-      { employeeId: 'E001', name: 'John Doe', daysPresent: 22, daysAbsent: 2 },
-      { employeeId: 'E002', name: 'Jane Smith', daysPresent: 20, daysAbsent: 4 },
-    ]);
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get('/api/employee');
+        setEmployees(response.data);
+        calculateReports(response.data); // Calculate reports after fetching employees
+      } catch (err) {
+        setError('Error fetching employees');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEmployees();
   }, []);
 
+  const calculateReports = (employees) => {
+    const dailyCounts = {};
+    const monthlyCounts = {};
+    const yearlyCounts = {};
+
+    employees.forEach(emp => {
+      const dateAdded = new Date(emp.dateAdded);
+      const year = dateAdded.getFullYear();
+      const month = dateAdded.getMonth() + 1; // Months are zero-based
+      const day = dateAdded.getDate();
+
+      // Count daily reports
+      dailyCounts[day] = (dailyCounts[day] || 0) + 1;
+
+      // Count monthly reports
+      monthlyCounts[month] = (monthlyCounts[month] || 0) + 1;
+
+      // Count yearly reports
+      yearlyCounts[year] = (yearlyCounts[year] || 0) + 1;
+    });
+
+    // Prepare data for charts
+    const dailyData = Object.entries(dailyCounts).map(([day, count]) => ({ day, count }));
+    const monthlyData = Object.entries(monthlyCounts).map(([month, count]) => ({ month, count }));
+    const yearlyData = Object.entries(yearlyCounts).map(([year, count]) => ({ year, count }));
+
+    setDailyReport(dailyData);
+    setMonthlyReport(monthlyData);
+    setYearlyReport(yearlyData);
+  };
+
+  // Handle form changes for updating employee
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Filter employees based on search query
+  const filteredEmployees = employees.filter((employee) =>
+    employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
-    <div>
+    <div className="employee-list-container">
       <Header />
-      <div className="hr-report-container">
-      <h1 className="hr-report-title">HR Management Report</h1>
+      <h2>Employee List</h2>
 
-      {/* Salary Management Section */}
-      <section className="report-section">
-        <h2 className="report-subtitle">Salary Management</h2>
-        <BarChart width={600} height={300} data={salaryData}>
+      {/* Search bar */}
+      <input
+        type="text"
+        className="search-bar"
+        placeholder="Search by Employee ID"
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
+
+      {/* Charts for daily, monthly, and yearly reports */}
+      <div className="charts">
+        <h3>Daily Report</h3>
+        <BarChart width={600} height={300} data={dailyReport}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="day" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="salary" fill="#8884d8" />
-          <Bar dataKey="allowances" fill="#82ca9d" />
-          <Bar dataKey="otHours" fill="#ffc658" />
+          <Bar dataKey="count" fill="#8884d8" />
         </BarChart>
-        <table className="report-table">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Salary</th>
-              <th>Allowances</th>
-              <th>OT Hours</th>
-            </tr>
-          </thead>
-          <tbody>
-            {salaryData.map((data, index) => (
-              <tr key={index}>
-                <td>{data.employeeId}</td>
-                <td>{data.name}</td>
-                <td>${data.salary}</td>
-                <td>${data.allowances}</td>
-                <td>{data.otHours}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
 
-      {/* Leave Management Section */}
-      <section className="report-section">
-        <h2 className="report-subtitle">Leave Management</h2>
-        <BarChart width={600} height={300} data={leaveData}>
+        <h3>Monthly Report</h3>
+        <BarChart width={600} height={300} data={monthlyReport}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="daysTaken" fill="#8884d8" />
+          <Bar dataKey="count" fill="#82ca9d" />
         </BarChart>
-        <table className="report-table">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Leave Type</th>
-              <th>Days Taken</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaveData.map((data, index) => (
-              <tr key={index}>
-                <td>{data.employeeId}</td>
-                <td>{data.name}</td>
-                <td>{data.leaveType}</td>
-                <td>{data.daysTaken}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
 
-      {/* Attendance Tracking Section */}
-      <section className="report-section">
-        <h2 className="report-subtitle">Attendance Tracking</h2>
-        <BarChart width={600} height={300} data={attendanceData}>
+        <h3>Yearly Report</h3>
+        <BarChart width={600} height={300} data={yearlyReport}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="year" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="daysPresent" fill="#8884d8" />
-          <Bar dataKey="daysAbsent" fill="#82ca9d" />
+          <Bar dataKey="count" fill="#ff7300" />
         </BarChart>
-        <table className="report-table">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Days Present</th>
-              <th>Days Absent</th>
+      </div>
+
+      {/* Employee Table */}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Type</th>
+            <th>Salary</th>
+            <th>DOB</th>
+            <th>Date Added</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEmployees.map((employee) => (
+            <tr key={employee._id}>
+              <td>{employee.employeeId}</td>
+              <td>{employee.firstName}</td>
+              <td>{employee.lastName}</td>
+              <td>{employee.department}</td>
+              <td>{employee.email}</td>
+              <td>{employee.employeeType}</td>
+              <td>{employee.baseSalary}</td>
+              <td>{new Date(employee.dateOfBirth).toLocaleDateString()}</td>
+              <td>{new Date(employee.dateAdded).toLocaleDateString()}</td> {/* Display date added */}
             </tr>
-          </thead>
-          <tbody>
-            {attendanceData.map((data, index) => (
-              <tr key={index}>
-                <td>{data.employeeId}</td>
-                <td>{data.name}</td>
-                <td>{data.daysPresent}</td>
-                <td>{data.daysAbsent}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-    </div>
-    <Footer />
+          ))}
+        </tbody>
+      </table>
+
+      {/* Update Form */}
+      {/* Add the update form similar to your original component, but ensure consistency */}
+
+      <Footer />
     </div>
   );
 };
 
-export default HRManagementReport;
+export default EmployeeList;
