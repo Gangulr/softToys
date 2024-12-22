@@ -15,6 +15,7 @@ import AddEmployeeRoutes from './routes/AddEmployeeRoutes.js';
 import SalaryDetailsRoutes from './routes/SalaryDetailsRoutes.js';
 import AttendenceRoutes from './routes/AttendenceRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import notificationsRouter from './routes/NotificationRoutes.js';
 
 // Load the .env file
 dotenv.config();
@@ -40,6 +41,7 @@ app.use("/api/employee", AddEmployeeRoutes)
 app.use("/api/salary", SalaryDetailsRoutes);
 app.use('/api/attendence', AttendenceRoutes); // Ensure the path matches
 app.use('api/dashboard', dashboardRoutes);
+app.use('/api/notifications', notificationsRouter);
 
 
 

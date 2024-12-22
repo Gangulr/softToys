@@ -1,181 +1,127 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
-
 import Header from '../Shared/Header';
 import Footer from '../Shared/Footer';
+import { Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-const EmployeeList = () => {
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
+
+const HRReport = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    department: '',
-    employeeId: '',
-    employeeType: '',
-    baseSalary: '',
-    dateOfBirth: ''
-  });
-  const [searchQuery, setSearchQuery] = useState('');
 
-  // States for reports
-  const [dailyReport, setDailyReport] = useState([]);
-  const [monthlyReport, setMonthlyReport] = useState([]);
-  const [yearlyReport, setYearlyReport] = useState([]);
-
-  // Fetch employees from backend
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const response = await axios.get('/api/employee');
         setEmployees(response.data);
-        calculateReports(response.data); // Calculate reports after fetching employees
       } catch (err) {
-        setError('Error fetching employees');
+        setError('Failed to retrieve employees. Please try again later.');
+        console.error('Error fetching employees:', err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchEmployees();
   }, []);
 
-  const calculateReports = (employees) => {
+  const generateDailyData = () => {
     const dailyCounts = {};
-    const monthlyCounts = {};
-    const yearlyCounts = {};
-
     employees.forEach(emp => {
-      const dateAdded = new Date(emp.dateAdded);
-      const year = dateAdded.getFullYear();
-      const month = dateAdded.getMonth() + 1; // Months are zero-based
+      const dateAdded = new Date(emp.joiningDate);
       const day = dateAdded.getDate();
-
-      // Count daily reports
       dailyCounts[day] = (dailyCounts[day] || 0) + 1;
+    });
 
-      // Count monthly reports
+    return {
+      labels: Object.keys(dailyCounts),
+      datasets: [
+        {
+          label: 'Daily Joinings',
+          data: Object.values(dailyCounts),
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
+  const generateMonthlyData = () => {
+    const monthlyCounts = {};
+    employees.forEach(emp => {
+      const dateAdded = new Date(emp.joiningDate);
+      const month = dateAdded.getMonth() + 1; // Months are zero-based
       monthlyCounts[month] = (monthlyCounts[month] || 0) + 1;
+    });
 
-      // Count yearly reports
+    return {
+      labels: Object.keys(monthlyCounts),
+      datasets: [
+        {
+          label: 'Monthly Joinings',
+          data: Object.values(monthlyCounts),
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          borderColor: 'rgba(153, 102, 255, 1)',
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
+  const generateYearlyData = () => {
+    const yearlyCounts = {};
+    employees.forEach(emp => {
+      const dateAdded = new Date(emp.joiningDate);
+      const year = dateAdded.getFullYear();
       yearlyCounts[year] = (yearlyCounts[year] || 0) + 1;
     });
 
-    // Prepare data for charts
-    const dailyData = Object.entries(dailyCounts).map(([day, count]) => ({ day, count }));
-    const monthlyData = Object.entries(monthlyCounts).map(([month, count]) => ({ month, count }));
-    const yearlyData = Object.entries(yearlyCounts).map(([year, count]) => ({ year, count }));
-
-    setDailyReport(dailyData);
-    setMonthlyReport(monthlyData);
-    setYearlyReport(yearlyData);
+    return {
+      labels: Object.keys(yearlyCounts),
+      datasets: [
+        {
+          label: 'Yearly Joinings',
+          data: Object.values(yearlyCounts),
+          fill: false,
+          backgroundColor: 'rgba(255, 206, 86, 0.2)',
+          borderColor: 'rgba(255, 206, 86, 1)',
+          tension: 0.1,
+        },
+      ],
+    };
   };
 
-  // Handle form changes for updating employee
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  // Filter employees based on search query
-  const filteredEmployees = employees.filter((employee) =>
-    employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <div className="text-center text-lg">Loading...</div>;
+  if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
-    <div className="employee-list-container">
+    <div className="bg-gray-50 min-h-screen">
       <Header />
-      <h2>Employee List</h2>
-
-      {/* Search bar */}
-      <input
-        type="text"
-        className="search-bar"
-        placeholder="Search by Employee ID"
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
-
-      {/* Charts for daily, monthly, and yearly reports */}
-      <div className="charts">
-        <h3>Daily Report</h3>
-        <BarChart width={600} height={300} data={dailyReport}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#8884d8" />
-        </BarChart>
-
-        <h3>Monthly Report</h3>
-        <BarChart width={600} height={300} data={monthlyReport}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#82ca9d" />
-        </BarChart>
-
-        <h3>Yearly Report</h3>
-        <BarChart width={600} height={300} data={yearlyReport}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="year" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#ff7300" />
-        </BarChart>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-700">HR Report</h1>
+        <div className="flex flex-col md:flex-row justify-around mb-6">
+          <div className="w-full md:w-1/2 mb-6 md:mb-0">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">Bar Chart - Daily Joinings</h2>
+            <Bar data={generateDailyData()} options={{ responsive: true }} />
+          </div>
+          <div className="w-full md:w-1/2">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">Bar Chart - Monthly Joinings</h2>
+            <Bar data={generateMonthlyData()} options={{ responsive: true }} />
+          </div>
+        </div>
+        <div className="w-full">
+          <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">Line Chart - Yearly Joinings</h2>
+          <Line data={generateYearlyData()} options={{ responsive: true }} />
+        </div>
       </div>
-
-      {/* Employee Table */}
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Department</th>
-            <th>Email</th>
-            <th>Type</th>
-            <th>Salary</th>
-            <th>DOB</th>
-            <th>Date Added</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEmployees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee.employeeId}</td>
-              <td>{employee.firstName}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.department}</td>
-              <td>{employee.email}</td>
-              <td>{employee.employeeType}</td>
-              <td>{employee.baseSalary}</td>
-              <td>{new Date(employee.dateOfBirth).toLocaleDateString()}</td>
-              <td>{new Date(employee.dateAdded).toLocaleDateString()}</td> {/* Display date added */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Update Form */}
-      {/* Add the update form similar to your original component, but ensure consistency */}
-
       <Footer />
     </div>
   );
 };
 
-export default EmployeeList;
+export default HRReport;

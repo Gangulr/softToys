@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './addemp.css';
 import Header from '../Shared/Header';
 import Footer from '../Shared/Footer';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../image/design.png';
 
 const departments = [
   'Production Department',
@@ -65,46 +65,44 @@ const AddEmployeeForm = () => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [joiningDate, setJoiningDate] = useState('');
   const [message, setMessage] = useState('');
-  
-  // State for current date
   const [currentDate, setCurrentDate] = useState('');
-
   const navigate = useNavigate();
 
+  // Validations
   const validateEmployeeId = (id) => /^[0-9]{1,5}$/.test(id);
   const validateName = (name) => /^[a-zA-Z\s]+$/.test(name);
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-  
   const validateNIC = (nic) => {
     const lengthValid = nic.length === 12 || (nic.length === 10 && /^[0-9]{9}[Vv]$/.test(nic));
-    const restrictedChars = /^[0-9Vv]+$/.test(nic);
-    return lengthValid && restrictedChars;
+    return lengthValid;
   };
+  const validateSalary = (salary) => salary > 0;
 
+  // Form Submission Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!validateEmployeeId(employeeId)) {
       setMessage('Employee ID must be numeric and up to 5 digits.');
       return;
     }
-  
+
     if (!validateName(firstName) || !validateName(lastName)) {
       setMessage('Names can only contain letters and spaces.');
       return;
     }
-  
+
     if (!validateEmail(email)) {
       setMessage('Please enter a valid email.');
       return;
     }
-  
+
     if (!validateNIC(nic)) {
       setMessage('NIC must be 12 digits or 9 digits followed by V/v.');
       return;
     }
-  
-    if (!baseSalary || isNaN(baseSalary) || parseFloat(baseSalary) <= 0) {
+
+    if (!validateSalary(parseFloat(baseSalary))) {
       setMessage('Base Salary must be a positive number.');
       return;
     }
@@ -114,22 +112,14 @@ const AddEmployeeForm = () => {
       setMessage('Employee must be at least 18 years old.');
       return;
     }
-  
-    console.log({
-      firstName,
-      lastName,
-      email,
-      nic,
-      department,
-      employeeId,
-      employeeType,
-      designation,
-      baseSalary,
-      dateOfBirth,
-      joiningDate,
-      currentDate,
-    });
-  
+
+    const joining = new Date(joiningDate);
+    const birth = new Date(dateOfBirth);
+    if (joining <= birth) {
+      setMessage('Joining date must be after date of birth.');
+      return;
+    }
+
     try {
       const response = await axios.post('/api/employee', {
         firstName,
@@ -143,31 +133,38 @@ const AddEmployeeForm = () => {
         baseSalary: parseFloat(baseSalary),
         dateOfBirth,
         joiningDate,
-        currentDate,
       });
-  
+
       setMessage(response.data.msg || 'Employee added successfully!');
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setNic('');
-      setDepartment(departments[0]);
-      setEmployeeId('');
-      setEmployeeType(employeeTypes[0]);
-      setDesignation('');
-      setBaseSalary('');
-      setDateOfBirth('');
-      setJoiningDate('');
-      setCurrentDate('');
+      resetForm();
     } catch (error) {
-      setMessage(error.response?.data?.error || 'An error occurred while adding the employee.');
+      // Improved error handling
+      const errorMessage = error.response?.data?.message || 'An error occurred while adding the employee.';
+      setMessage(errorMessage);
     }
   };
-  
-  const handleIdKeyPress = (event) => {
-    const charCode = event.charCode;
-    if (!/[0-9]/.test(String.fromCharCode(charCode))) {
-      event.preventDefault();
+
+  // Reset Form
+  const resetForm = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setNic('');
+    setDepartment(departments[0]);
+    setEmployeeId('');
+    setEmployeeType(employeeTypes[0]);
+    setDesignation('');
+    setBaseSalary('');
+    setDateOfBirth('');
+    setJoiningDate(currentDate); // Reset to the initial value
+    setMessage(''); // Reset message
+  };
+
+  // Input Handlers
+  const handleIdChange = (event) => {
+    const value = event.target.value;
+    if (/^\d{0,5}$/.test(value)) { // Allow up to 5 digits
+      setEmployeeId(value);
     }
   };
 
@@ -196,92 +193,102 @@ const AddEmployeeForm = () => {
   };
 
   useEffect(() => {
-    setDesignation('');
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0];
     setCurrentDate(formattedDate);
+    setJoiningDate(formattedDate);
   }, [department, employeeType]);
 
-  const maxDate = new Date().getFullYear() - 18; 
-  const minDate = '1900-01-01'; 
+  const maxDate = new Date().getFullYear() - 18;
   const restrictedMaxDate = `${maxDate}-12-31`;
 
   return (
-    <div>
+    <div
+      className="min-h-screen bg-pink-100"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: 'calc(100vh - 10rem)', // Adjust height for header and footer
+      }}
+    >
       <Header />
-      <div className="form-container">
-        <h2 className="form-title">Add Employee Form</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              id="firstName"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              onKeyPress={handleNameKeyPress}
-              required
-            />
+      <div className="bg-white bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-3xl mx-auto mt-8">
+        <h2 className="text-4xl font-bold text-center text-purple-600 mb-8">Add Employee</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">First Name</label>
+              <input
+                type="text"
+                className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                onKeyPress={handleNameKeyPress}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Last Name</label>
+              <input
+                type="text"
+                className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                onKeyPress={handleNameKeyPress}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
-              id="lastName"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              onKeyPress={handleNameKeyPress}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
               type="email"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="nic">NIC</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">NIC</label>
             <input
-              id="nic"
               type="text"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={nic}
               onChange={handleNicChange}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="employeeId">Employee ID</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Employee ID</label>
             <input
-              id="employeeId"
               type="text"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
-              onKeyPress={handleIdKeyPress}
-              maxLength={5}
+              onChange={handleIdChange}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="department">Department</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Department</label>
             <select
-              id="department"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={department}
-              onChange={(e) => setDepartment(e.target.value)}
+              onChange={(e) => {
+                setDepartment(e.target.value);
+                setDesignation(''); // Reset designation when department changes
+              }}
             >
               {departments.map((dept) => (
                 <option key={dept} value={dept}>{dept}</option>
               ))}
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="designation">Designation</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Designation</label>
             <select
-              id="designation"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
               required
@@ -292,57 +299,69 @@ const AddEmployeeForm = () => {
               ))}
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="employeeType">Employee Type</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Employee Type</label>
             <select
-              id="employeeType"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={employeeType}
-              onChange={(e) => setEmployeeType(e.target.value)}
+              onChange={(e) => {
+                setEmployeeType(e.target.value);
+                setDesignation(''); // Reset designation when employee type changes
+              }}
             >
               {employeeTypes.map((type) => (
                 <option key={type} value={type}>{type}</option>
               ))}
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="baseSalary">Base Salary</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Base Salary</label>
             <input
-              id="baseSalary"
               type="number"
+              min="0"
+              className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={baseSalary}
               onChange={(e) => setBaseSalary(e.target.value)}
-              min="0"
-              step="0.01"
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="dateOfBirth">Date of Birth</label>
-            <input
-              id="dateOfBirth"
-              type="date"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              max={restrictedMaxDate}
-              min={minDate}
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <input
+                type="date"
+                className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                required
+                max={restrictedMaxDate} // 18 years restriction
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Joining Date</label>
+              <input
+                type="date"
+                className="mt-1 block w-full px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={joiningDate}
+                onChange={(e) => setJoiningDate(e.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="joiningDate">Joining Date</label>
-            <input
-              id="joiningDate"
-              type="date"
-              value={joiningDate}
-              onChange={(e) => setJoiningDate(e.target.value)}
-              max={currentDate} // Prevents selecting a future date
-              required
-            />
-          </div>
-          <button type="submit" className="submit-button">Add Employee</button>
-          <button type="button" onClick={handleViewEmployees}>View Employees</button>
+          {message && <p className="text-red-500 text-sm">{message}</p>}
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white font-semibold py-2 rounded-md shadow-md hover:bg-purple-700"
+          >
+            Add Employee
+          </button>
         </form>
-        {message && <p className="message">{message}</p>}
+        <button
+          onClick={handleViewEmployees}
+          className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md shadow-md hover:bg-blue-700"
+        >
+          View Employees
+        </button>
       </div>
       <Footer />
     </div>

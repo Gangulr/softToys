@@ -72,21 +72,11 @@ const employeeSchema = new mongoose.Schema({
   joiningDate: {
     type: Date,
     required: true,
-    validate: {
-      validator: function (v) {
-        // Ensure joining date is after date of birth
-        return v > this.dateOfBirth;
-      },
-      message: 'Joining date must be after the date of birth.',
-    },
   },
-  currentDate: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
-// Create the Employee model
+// Create a model from the schema
 const Employee = mongoose.model('Employee', employeeSchema);
 
+// Export the model
 export default Employee;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './SalaryMang.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../Shared/Header';
 import Footer from '../Shared/Footer';
+import backgroundImage from '../image/design.png'; // Import your background image
 
 const EmployeeSalaryDetailsForm = () => {
   const [employeeSalaryDetails, setEmployeeSalaryDetails] = useState({
@@ -49,11 +49,11 @@ const EmployeeSalaryDetailsForm = () => {
   const validateForm = () => {
     const errors = {};
 
-    // Validate employee ID (only numbers allowed)
+    // Validate employee ID (only 5 digits allowed)
     if (!employeeSalaryDetails.employeeId) {
       errors.employeeId = 'Employee ID is required.';
-    } else if (!/^\d+$/.test(employeeSalaryDetails.employeeId)) {
-      errors.employeeId = 'Employee ID must contain only numbers.';
+    } else if (!/^\d{5}$/.test(employeeSalaryDetails.employeeId)) {
+      errors.employeeId = 'Employee ID must be exactly 5 digits.';
     }
 
     // Validate employee name (no numbers or symbols)
@@ -92,10 +92,6 @@ const EmployeeSalaryDetailsForm = () => {
         await axios.post('/api/Salary', employeeSalaryDetails);
       }
       setIsSubmitted(true);
-
-      // Navigate to salary table or a success page after submission
-      
-     
     } catch (err) {
       setError('Error submitting salary details');
     }
@@ -112,7 +108,7 @@ const EmployeeSalaryDetailsForm = () => {
   // Prevent non-numeric characters in the employeeId field
   const handleIdKeyPress = (event) => {
     const charCode = event.charCode;
-    if (!/[0-9]/.test(String.fromCharCode(charCode))) {
+    if (!/[0-9]/.test(String.fromCharCode(charCode)) || employeeSalaryDetails.employeeId.length >= 5) {
       event.preventDefault();
     }
   };
@@ -134,114 +130,122 @@ const EmployeeSalaryDetailsForm = () => {
   return (
     <div>
       <Header />
-      <div className="form-container">
-        <h2 className="form-title">{editMode ? 'Edit Salary Details' : 'Submit Salary Details'}</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="employeeId">Employee ID</label>
-            <input
-              type="text"
-              id="employeeId"
-              name="employeeId"
-              value={employeeSalaryDetails.employeeId}
-              onChange={handleChange}
-              onKeyPress={handleIdKeyPress} // Prevent invalid characters
-              disabled={editMode}
-            />
-            {validationErrors.employeeId && <p className="error">{validationErrors.employeeId}</p>}
+      <div 
+        className="flex flex-col min-h-screen bg-cover bg-center relative" 
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
+        <div className="flex-1 flex justify-center items-center p-4 bg-black bg-opacity-10">
+          <div className="max-w-xl w-full bg-white bg-opacity-80 backdrop-blur-lg rounded-lg shadow-xl p-10 border border-gray-200 space-y-6 z-10">
+            <h2 className="text-4xl font-bold text-purple-600 mb-4 text-center">
+              {editMode ? 'Edit Salary Details' : 'Submit Salary Details'}
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="form-group">
+                <label htmlFor="employeeId" className="block text-lg font-semibold text-gray-700">Employee ID</label>
+                <input
+                  type="text"
+                  id="employeeId"
+                  name="employeeId"
+                  value={employeeSalaryDetails.employeeId}
+                  onChange={handleChange}
+                  onKeyPress={handleIdKeyPress} // Prevent invalid characters
+                  disabled={editMode}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
+                />
+                {validationErrors.employeeId && <p className="text-red-500">{validationErrors.employeeId}</p>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="employeeName" className="block text-lg font-semibold text-gray-700">Employee Name</label>
+                <input
+                  type="text"
+                  id="employeeName"
+                  name="employeeName"
+                  value={employeeSalaryDetails.employeeName}
+                  onChange={handleChange}
+                  onKeyPress={handleNameKeyPress} // Prevent invalid characters
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+                {validationErrors.employeeName && <p className="text-red-500">{validationErrors.employeeName}</p>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="email" className="block text-lg font-semibold text-gray-700">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={employeeSalaryDetails.email}
+                  onChange={handleChange}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+                {validationErrors.email && <p className="text-red-500">{validationErrors.email}</p>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="baseSalary" className="block text-lg font-semibold text-gray-700">Base Salary</label>
+                <input
+                  type="number"
+                  id="baseSalary"
+                  name="baseSalary"
+                  value={employeeSalaryDetails.baseSalary}
+                  onChange={handleChange}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+                {validationErrors.baseSalary && <p className="text-red-500">{validationErrors.baseSalary}</p>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="allowances" className="block text-lg font-semibold text-gray-700">Allowances</label>
+                <input
+                  type="number"
+                  id="allowances"
+                  name="allowances"
+                  value={employeeSalaryDetails.allowances}
+                  onChange={handleChange}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="otHours" className="block text-lg font-semibold text-gray-700">OT Hours</label>
+                <input
+                  type="number"
+                  id="otHours"
+                  name="otHours"
+                  value={employeeSalaryDetails.otHours}
+                  onChange={handleChange}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="department" className="block text-lg font-semibold text-gray-700">Department</label>
+                <input
+                  type="text"
+                  id="department"
+                  name="department"
+                  value={employeeSalaryDetails.department}
+                  onChange={handleChange}
+                  className="w-full h-10 border border-gray-300 p-2 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+                >
+                  {editMode ? 'Update' : 'Submit'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleViewClick}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+                >
+                  View Salary Details
+                </button>
+              </div>
+            </form>
+            {error && <p className="text-red-500 text-center">{error}</p>}
+            {isSubmitted && <p className="text-green-500 text-center">Submitted successfully!</p>}
           </div>
-          <div className="form-group">
-            <label htmlFor="employeeName">Employee Name</label>
-            <input
-              type="text"
-              id="employeeName"
-              name="employeeName"
-              value={employeeSalaryDetails.employeeName}
-              onChange={handleChange}
-              onKeyPress={handleNameKeyPress} // Prevent invalid characters
-            />
-            {validationErrors.employeeName && <p className="error">{validationErrors.employeeName}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={employeeSalaryDetails.email}
-              onChange={handleChange}
-            />
-            {validationErrors.email && <p className="error">{validationErrors.email}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="baseSalary">Base Salary</label>
-            <input
-              type="number"
-              id="baseSalary"
-              name="baseSalary"
-              value={employeeSalaryDetails.baseSalary}
-              onChange={handleChange}
-            />
-            {validationErrors.baseSalary && <p className="error">{validationErrors.baseSalary}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="allowances">Allowances</label>
-            <input
-              type="number"
-              id="allowances"
-              name="allowances"
-              value={employeeSalaryDetails.allowances}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="otHours">OT Hours</label>
-            <input
-              type="number"
-              id="otHours"
-              name="otHours"
-              value={employeeSalaryDetails.otHours}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="department">Department</label>
-            <select
-              id="department"
-              name="department"
-              value={employeeSalaryDetails.department}
-              onChange={handleChange}
-            >
-              <option value="">Select Department</option>
-              <option value="HR">HR</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Sales">Sales</option>
-            </select>
-          </div>
-          <div className="button-container">
-            <button type="submit" className="submit-button">
-              {editMode ? 'Update' : 'Submit'}
-            </button>
-            <button type="button" className="view-button" onClick={handleViewClick}>
-              View
-            </button>
-          </div>
-        </form>
-        {isSubmitted && (
-          <div className="submitted-details">
-            <h3>{editMode ? 'Updated' : 'Submitted'} Employee Salary Details:</h3>
-            <p>Employee ID: {employeeSalaryDetails.employeeId}</p>
-            <p>Employee Name: {employeeSalaryDetails.employeeName}</p>
-            <p>Email: {employeeSalaryDetails.email}</p>
-            <p>Base Salary: {employeeSalaryDetails.baseSalary}</p>
-            <p>Allowances: {employeeSalaryDetails.allowances}</p>
-            <p>OT Hours: {employeeSalaryDetails.otHours}</p>
-            <p>Department: {employeeSalaryDetails.department}</p>
-          </div>
-        )}
-        {error && <p className="text-red-500">{error}</p>}
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

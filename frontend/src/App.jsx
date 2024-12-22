@@ -11,7 +11,7 @@ import LeaveRet from './LeaveRetrive/LeaveRet';
 import Addemp from './AddEmp/Addemp';
 import EmpRet from './AddEmpRet/empRet';
 import AttendanceForm from './Attendence/atten';
-import HRDashboard from './DashBoardHR/HRDashboard';
+
 import EditEmployee from './AddEmpRet/editemp';
 
 
@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/salarytable" element={<SalaryRet/>} />
           <Route path="/leavetable" element={<LeaveRet/>} />
           <Route path="/emptable" element={<EmpRet/>} />
-          <Route path="/dashboard" element={<HRDashboard/>} />
+        
           <Route path="/edit-employee/:id" element={<EditEmployee />} />
          
           

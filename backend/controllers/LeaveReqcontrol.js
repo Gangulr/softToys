@@ -1,4 +1,6 @@
-import LeaveReqModel from "../models/LeaveReqModel.js"; // Ensure path is correct
+// controllers/LeaveReqcontrol.js
+import LeaveReqModel from "../models/LeaveReqModel.js";
+import NotificationModel from "../models/NotificationModel.js";
 
 // Fetch all leave records
 export const fetchAllLeave = async (req, res) => {
@@ -11,90 +13,87 @@ export const fetchAllLeave = async (req, res) => {
     }
 };
 
+// Add a new leave request
 export const addLeaveRequest = async (req, res) => {
-    try {
-        console.log(req.body); // Use req.body for POST data
-        const { empId, name, startDate, endDate, reason, type, createdAt } = req.body;
+  try {
+    const { empId, name, startDate, endDate, reason, type } = req.body;
 
-        // Validation checks using a switch statement
-        switch (true) {
-            case !empId:
-                return res.status(400).json({ error: "Employee ID is required" });
-            case !name:
-                return res.status(400).json({ error: "Employee name is required" });
-            case !startDate:
-                return res.status(400).json({ error: "Start date is required" });
-            case !endDate:
-                return res.status(400).json({ error: "End date is required" });
-            case !reason:
-                return res.status(400).json({ error: "Reason for leave is required" });
-            case !type:
-                return res.status(400).json({ error: "Leave type is required" });
-        }
-
-        // Create a new leave request using the model
-        const leaveRequest = new LeaveReqModel({
-            empId,
-            name,
-            startDate: new Date(startDate),
-            endDate: new Date(endDate),
-            reason,
-            type,
-            createdAt: createdAt ? new Date(createdAt) : undefined
-        });
-
-        // Save the leave request to the database
-        await leaveRequest.save();
-
-        // Respond with a success message
-        res.status(201).json({ msg: "Leave request added successfully" });
-
-    } catch (error) {
-        console.error('Error adding leave request:', error);
-        res.status(500).json({ msg: "Leave request adding failed", error: error.message });
+    // Validation checks
+    if (!empId || !name || !startDate || !endDate || !reason || !type) {
+      return res.status(400).json({ error: "All fields are required" });
     }
 
+    // Create and save the new leave request
+    const leaveRequest = new LeaveReqModel({
+      empId,
+      name,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+      reason,
+      type,
+    });
+
+    await leaveRequest.save();
+
+    console.log('Leave request saved successfully:', leaveRequest);
+
+    // Create a notification after saving the leave request
+    const notification = new NotificationModel({
+      message: `New leave request from ${name} (${empId}) for ${type}.`,
+      empId,
+      type,
+    });
+
+    await notification.save();
+
+    console.log('Notification created successfully:', notification);
+
+    // Send response to the client
+    res.status(201).json({ msg: "Leave request and notification added successfully" });
+  } catch (error) {
+    console.error("Error adding leave request and notification:", error);
+    res.status(500).json({ msg: "Failed to add leave request", error: error.message });
+  }
 };
 
 // Update a leave request by ID
 export const updateLeaveRequest = async (req, res) => {
     try {
-      const { id } = req.params;  // ID from the request URL
-      const updatedData = req.body;  // Data to update from the request body
-  
-      // Find the leave request by ID and update it
-      const updatedLeave = await LeaveReqModel.findByIdAndUpdate(id, updatedData, {
-        new: true, // Return the updated document
-        runValidators: true // Validate the updated data
-      });
-  
-      if (!updatedLeave) {
-        return res.status(404).json({ msg: 'Leave request not found' });
-      }
-  
-      res.json({ msg: 'Leave request updated successfully', leave: updatedLeave });
+        const { id } = req.params;  // ID from the request URL
+        const updatedData = req.body;  // Data to update from the request body
+
+        // Find the leave request by ID and update it
+        const updatedLeave = await LeaveReqModel.findByIdAndUpdate(id, updatedData, {
+            new: true, // Return the updated document
+            runValidators: true // Validate the updated data
+        });
+
+        if (!updatedLeave) {
+            return res.status(404).json({ msg: 'Leave request not found' });
+        }
+
+        res.json({ msg: 'Leave request updated successfully', leave: updatedLeave });
     } catch (error) {
-      console.error('Error updating leave request:', error);
-      res.status(500).json({ msg: 'Failed to update leave request', error: error.message });
+        console.error('Error updating leave request:', error);
+        res.status(500).json({ msg: 'Failed to update leave request', error: error.message });
     }
-  };
-  
-  // Delete a leave request by ID
-  export const deleteLeaveRequest = async (req, res) => {
+};
+
+// Delete a leave request by ID
+export const deleteLeaveRequest = async (req, res) => {
     try {
-      const { id } = req.params;  // ID from the request URL
-  
-      // Find the leave request by ID and delete it
-      const deletedLeave = await LeaveReqModel.findByIdAndDelete(id);
-  
-      if (!deletedLeave) {
-        return res.status(404).json({ msg: 'Leave request not found' });
-      }
-  
-      res.json({ msg: 'Leave request deleted successfully' });
+        const { id } = req.params;  // ID from the request URL
+
+        // Find the leave request by ID and delete it
+        const deletedLeave = await LeaveReqModel.findByIdAndDelete(id);
+
+        if (!deletedLeave) {
+            return res.status(404).json({ msg: 'Leave request not found' });
+        }
+
+        res.json({ msg: 'Leave request deleted successfully' });
     } catch (error) {
-      console.error('Error deleting leave request:', error);
-      res.status(500).json({ msg: 'Failed to delete leave request', error: error.message });
+        console.error('Error deleting leave request:', error);
+        res.status(500).json({ msg: 'Failed to delete leave request', error: error.message });
     }
-  };
-  
+};

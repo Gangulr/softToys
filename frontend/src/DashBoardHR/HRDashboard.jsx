@@ -1,48 +1,89 @@
+// src/components/HRDashboard.js
 import React, { useEffect, useState } from 'react';
-import './HRDashboard.css'; // CSS file for styling
-import axios from 'axios'; // Assuming you use axios for API requests
+import axios from 'axios';
+import './HRDashboard.css';
 
 function HRDashboard() {
   const [attendanceCount, setAttendanceCount] = useState(0);
   const [leaveRequestCount, setLeaveRequestCount] = useState(0);
   const [employeeCount, setEmployeeCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
 
-  // Fetch the counts from the backend
+  // Fetch the counts and notifications from the backend
   useEffect(() => {
-    const fetchCounts = async () => {
+    const fetchCountsAndNotifications = async () => {
       try {
-        const attendanceResponse = await axios.get('/api/attendance/count');
-        const leaveResponse = await axios.get('/api/leave/requests/count');
-        const employeeResponse = await axios.get('/api/employees/count');
+        const [attendanceResponse, leaveResponse, employeeResponse, notificationsResponse] = await Promise.all([
+          axios.get('/api/attendance/count'),
+          axios.get('/api/leave/requests/count'),
+          axios.get('/api/employees/count'), // Fetching employee count
+          axios.get('/api/notifications'), // Fetch notifications
+        ]);
 
-        // Update state with the counts
+        // Update state with the counts and notifications
         setAttendanceCount(attendanceResponse.data.count);
         setLeaveRequestCount(leaveResponse.data.count);
-        setEmployeeCount(employeeResponse.data.count);
+        setEmployeeCount(employeeResponse.data.count); // Setting the employee count
+        setNotifications(notificationsResponse.data); // Update notifications state
       } catch (error) {
-        console.error('Error fetching counts:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchCounts();
+    fetchCountsAndNotifications();
   }, []);
+
+  // Handle approval or rejection of notifications (for leave requests)
+  const handleAction = async (id, action) => {
+    try {
+      // Send the action (approve/reject) to the backend
+      await axios.put(`/api/notifications/${id}/${action}`);
+
+      // Refetch notifications after the action is performed
+      const response = await axios.get('/api/notifications');
+      setNotifications(response.data); // Update notifications
+    } catch (error) {
+      console.error('Error updating notification status:', error);
+    }
+  };
 
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">HR Dashboard</h1>
-      <div className="dashboard-stats">
-        <div className="stat">
-          <h2 className="stat-title">Employee Attendance Count</h2>
-          <p className="stat-value">{attendanceCount}</p>
-        </div>
-        <div className="stat">
-          <h2 className="stat-title">Leave Request Count</h2>
-          <p className="stat-value">{leaveRequestCount}</p>
-        </div>
-        <div className="stat">
-          <h2 className="stat-title">Total Employee Count</h2>
-          <p className="stat-value">{employeeCount}</p>
-        </div>
+
+      {/* Display the counts */}
+      <div className="counts-section">
+        <p>Attendance Count: {attendanceCount}</p>
+        <p>Leave Request Count: {leaveRequestCount}</p>
+        <p>Employee Count: {employeeCount}</p> {/* Displaying employee count */}
+      </div>
+
+      {/* Notification Section */}
+      <div className="notification-section">
+        <h2>Notifications</h2>
+        <ul className="notification-list">
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <li key={notification._id} className="notification-item">
+                <span>{notification.message}</span>
+                <button
+                  onClick={() => handleAction(notification._id, 'approve')}
+                  className="approve-button"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleAction(notification._id, 'reject')}
+                  className="reject-button"
+                >
+                  Reject
+                </button>
+              </li>
+            ))
+          ) : (
+            <li>No new notifications</li>
+          )}
+        </ul>
       </div>
     </div>
   );

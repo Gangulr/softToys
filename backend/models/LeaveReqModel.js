@@ -1,3 +1,4 @@
+// models/LeaveReqModel.js
 import mongoose from "mongoose";
 
 // Define the schema for a leave request
@@ -6,6 +7,7 @@ const LeaveRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
+    
   },
   name: {
     type: String,

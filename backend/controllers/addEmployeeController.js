@@ -94,6 +94,17 @@ class EmployeeController {
       res.status(500).json({ message: 'Failed to delete employee.' });
     }
   }
+
+  // Get the count of all employees
+  static async getEmployeeCount(req, res) {
+    try {
+      const count = await Employee.countDocuments(); // Count the number of employee documents
+      res.status(200).json({ count });
+    } catch (error) {
+      console.error('Error fetching employee count:', error);
+      res.status(500).json({ message: 'Failed to fetch employee count' });
+    }
+  }
 }
 
 export default EmployeeController;

@@ -1,39 +1,152 @@
+/* General container styling */
 .dashboard-container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1200px; /* Increased max width for larger displays */
   margin: 0 auto;
+  background-color: #f9f9f9; /* Light background for better contrast */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
+/* Title styling */
 .dashboard-title {
   text-align: center;
   font-size: 2.5em;
   margin-bottom: 30px;
-  color: #333; /* Darker color for better readability */
+  color: #333; /* Darker color for readability */
+  font-weight: 600; /* Slightly bolder font */
+  text-transform: uppercase; /* Uppercase for stronger visual presence */
+  letter-spacing: 1.2px; /* Slight letter spacing */
 }
 
+/* Stats section */
 .dashboard-stats {
   display: flex;
-  justify-content: space-around;
-  flex-direction: column; /* Stack the stats vertically */
-  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Wrap stats on smaller screens */
+  margin-bottom: 30px; /* Space between stats and notifications */
 }
 
 .stat {
-  width: 100%; /* Full width */
-  margin: 10px 0; /* Spacing between stats */
+  width: 30%; /* Set width to 30% for 3 columns */
+  background-color: #fff; /* White background for stats */
+  padding: 20px;
+  margin: 10px 0; /* Spacing between stat cards */
+  text-align: center;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05); /* Soft shadow for depth */
+  transition: transform 0.2s ease-in-out; /* Smooth hover animation */
+}
+
+.stat:hover {
+  transform: translateY(-5px); /* Hover effect to lift the card */
 }
 
 .stat-title {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+  font-size: 1.2em;
   color: #555; /* Slightly lighter color for titles */
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .stat-value {
-  font-size: 2.5em;
+  font-size: 2.2em;
   font-weight: bold;
   color: #007bff; /* Blue color for emphasis */
-  text-align: center; /* Center text */
   border-bottom: 2px solid #007bff; /* Underline the value */
-  padding-bottom: 10px; /* Space between value and underline */
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+/* Notification Section */
+.notification-section {
+  margin-top: 40px; /* Space above notification section */
+}
+
+.notification-section h2 {
+  text-align: center;
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05); /* Soft shadow for depth */
+  transition: background-color 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.notification-item:hover {
+  background-color: #f1f1f1; /* Light background on hover */
+}
+
+.notification-item span {
+  flex: 1;
+  font-size: 1.1em;
+  color: #333; /* Darker color for message text */
+}
+
+/* Button styling */
+.approve-button,
+.reject-button {
+  padding: 10px 15px;
+  font-size: 0.9em;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.approve-button {
+  background-color: #28a745; /* Green for approval */
+  color: #fff;
+  margin-right: 10px;
+}
+
+.approve-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.reject-button {
+  background-color: #dc3545; /* Red for rejection */
+  color: #fff;
+}
+
+.reject-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    flex-direction: column; /* Stack stats vertically on smaller screens */
+  }
+
+  .stat {
+    width: 100%; /* Full width on mobile */
+    margin: 10px 0;
+  }
+
+  .notification-item {
+    flex-direction: column; /* Stack notification content on smaller screens */
+    align-items: flex-start;
+  }
+
+  .approve-button,
+  .reject-button {
+    width: 100%; /* Full width buttons on mobile */
+    margin: 5px 0;
+  }
 }
